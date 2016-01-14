@@ -6,10 +6,13 @@ function getAlias($alias)
 
 function autoload($className)
 {
-    $fileName = dirname(__DIR__) . '\\' . $className . '.php';
+    $fileName = dirname(__DIR__) . '/' . str_replace('\\','/',$className) . '.php';
+    //echo $fileName ."<br>";
     if (file_exists($fileName)) {
-        require_once $fileName;
-        return new $className;
+        include $fileName;
+        //echo $className . '<br>';
+        //只要require文件就可以了我擦...
+        //return new $className;
     } else {
         $dirPrefix = getAlias('');
         if($dirPrefix) {
@@ -17,7 +20,6 @@ function autoload($className)
         } else {
         }
     }
-//    echo $className;
 }
 
 spl_autoload_register('autoload');

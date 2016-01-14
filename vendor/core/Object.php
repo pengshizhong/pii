@@ -3,11 +3,6 @@ namespace vendor\core;
 
 class Object
 {
-    public function __construct()
-    {
-
-    }
-
     public function __set($property,$value)
     {
         if (property_exists(get_class($this),$property)) {
@@ -24,13 +19,14 @@ class Object
 
     public function __get($property)
     {
-        if (property_exists(get_class($this),$property)) {
-            return $this->$property;
-        } else{
+        $funcName = 'get' . ucfirst(substr($property,1));
+        if (method_exists($this,$funcName)) {
+            return call_user_func([$this,$funcName]);
+        } else {
             if (false) {
                 //行为？
             } else {
-                throw new PiiExcepiton('there is not property in this class',110);
+                return null;
             }
         }
     }
