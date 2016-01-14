@@ -6,6 +6,7 @@ use vendor\core\Object;
 class DbFactory extends Object
 {
     private $_instance = [];
+    private $_activeRecords = [];
 
     public function getInstance($config)
     {
