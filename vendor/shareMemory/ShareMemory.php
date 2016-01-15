@@ -43,9 +43,9 @@ class ShareMemory extends Object{
         }
     }
 
-    public function test()
+    public static function write($shmid)
     {
-
+        
     }
 
 }
