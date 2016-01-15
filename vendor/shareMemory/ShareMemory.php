@@ -6,7 +6,7 @@ use vendor\core\PiiExcepiton;
 class ShareMemory extends Object{
     private  static $_shmid = [];
 
-    private function __construct()
+    private function __construct($config)
     {
 
     }
@@ -32,7 +32,7 @@ class ShareMemory extends Object{
      * $size = 1024; // Size, in bytes, of the segment
      * $shmid = shmop_open($systemid, $mode, $permissions, $size);
      */
-    private static function open($config)
+    private function open($config)
     {
         $shmid = shmop_open($config['systemId'],$config['mode'],$config['permissions'],$config['size']);
         if ($shmid) {
