@@ -22,12 +22,24 @@ class Object
         $funcName = 'get' . ucfirst(substr($property,1));
         if (method_exists($this,$funcName)) {
             return call_user_func([$this,$funcName]);
-        } else {
+        }
+//        if (property_exists(get_class($this),$property)) {
+//            $tmp = $this;
+//            var_dump($tmp);
+//            return $tmp->$property;
+//            小测试
+//        }
+        else {
             if (false) {
                 //行为？
             } else {
                 return null;
             }
         }
+    }
+
+    public function setAttributes (array $data)
+    {
+
     }
 }

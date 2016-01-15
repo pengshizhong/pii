@@ -1,9 +1,9 @@
 <?php
 namespace vendor\db;
 
-use vendor\core\Object;
+use vendor\core\SingleFactory;
 
-class DbFactory extends Object
+class DbFactory extends SingleFactory
 {
     private $_instance = [];
     private $_activeRecords = [];

@@ -9,15 +9,14 @@ class App extends Object{
     private static $_diContainer;
     private static $_controller;
 
-    private static function _beforeRun()
-    {
+    private static function init() {
         self::$_urlManage = new UrlManage();
         self::$_diContainer = new Container();
     }
 
     public static function run()
     {
-        self::_beforeRun();
+        self::init();
         self::_createController();
         self::_startAction();
     }
