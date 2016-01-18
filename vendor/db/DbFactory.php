@@ -7,39 +7,31 @@ use vendor\core\SingleFactory;
 
 class DbFactory extends SingleFactory
 {
-    private $_instance = [];
-    private static $_factory  = null;
+    private static $_instance = [];
 
     private function __construct(){
 
     }
 
-    public function getInstance(){
-        if(!is_null(self::$_factory)){
-            return self::$_factory;
+    public static function getInstance(){
+        $dbInfo = self::_getDbInfo();
+        $idKey  = md5($dbInfo['host'] . $dbInfo['dbName']);
+        if(array_key_exists($idKey,self::$_instance)){
+            return self::$_instance[$idKey];
         }
-        else {
-            return self::$_factory = new self;
-        }
-    }
-
-    public function getDbInstance()
-    {
-        $dbInfo = $this->_getDbInfo();
-        $idKey = md5($dbInfo);
-        if (array_key_exists($idKey,$this->_instance)) {
-            return $this->_instance[$idKey];
-        } else {
-            $this->_instance[$idKey] = $this->_createInstance($dbInfo);
+        else{
+            $instance = self::_createDbInstance($dbInfo);
+            return self::$_instance[$idKey] = $instance;
         }
     }
 
-    private function _getDbInfo(){
+    private static function _getDbInfo(){
         $config = Pii::app()->config;
         $dbInfo = $config->getValue('db','db');
         if(!$dbInfo){
             throw new PiiException('there is no db info in config');
         }
+        return $dbInfo;
     }
 
     /**
@@ -50,11 +42,12 @@ class DbFactory extends SingleFactory
      *      'password'  => '',
      *       ]
      */
-    private function _createInstance($config)
+    private static function _createDbInstance($dbInfo)
     {
         echobr('开始创建数据库实例');
-        $className = '\vendor\db\\' . ucfirst($config['dbType']) . '\\' . ucfirst($config['dbType']) . '.php';
-        return new $className($config);
+        //var_dump($dbInfo);
+        $className = '\vendor\db\\' . $dbInfo['dbType'] . '\\' . ucfirst($dbInfo['dbType']);
+        return new $className($dbInfo);
     }
 
 }

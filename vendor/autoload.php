@@ -18,7 +18,7 @@ function getClassFile($className)
 function autoload($className)
 {
     $fileName = dirname(__DIR__) . '/' . str_replace('\\','/',$className) . '.php';
-    //echo $fileName ."<br>";
+    echobr('当前要实例化的：'.$fileName);
     //echo $fileName;
     if (file_exists($fileName)) {
         include $fileName;

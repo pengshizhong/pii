@@ -59,6 +59,7 @@ class App extends Object{
         $config = Pii::app()->config;
         $classPrefix = $config->getValue($className,'core');
         if($classPrefix){
+            echobr($classPrefix . '\\' . $className);
             return call_user_func([$classPrefix . '\\' . $className,'getInstance']);
         }
         else {

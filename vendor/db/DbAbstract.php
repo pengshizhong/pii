@@ -2,7 +2,7 @@
 namespace vendor\db;
 
 use vendor\core\Object;
-
+//为调试方便暂时不继承抽象类
 abstract class DbAbstract extends Object
 {
     public function __construct(){
