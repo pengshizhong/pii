@@ -47,8 +47,26 @@ class App extends Object{
         if(array_key_exists($property,$this->_components)){
             return $this->_components[$property];
         } else {
-            return $this->_components[$property] = call_user_func([ucfirst($property),'getInstance']);
+            return $this->_components[$property] = $this->createObject(ucfirst($property));
         }
     }
 
+    /**
+     * 后期可能加入依赖注入
+     */
+    public function createObject($className)
+    {
+        $config = Pii::app()->config;
+        $classPrefix = $config->getValue($className,'core');
+        if($classPrefix){
+            return call_user_func([$classPrefix . '\\' . $className,'getInstance']);
+        }
+        else {
+            $className = $config->getValue($className,'alias');
+            if(!$className){
+                throw new PiiException('there is no exist config for this name');
+            }
+            return call_user_func([$className,'getInstance']);
+        }
+    }
 }

@@ -8,7 +8,7 @@ abstract class Mysql extends DbAbstract{
 
     public function __construct($config)
     {
-
+        $this->connect();
     }
 
     private function query(){

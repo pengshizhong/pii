@@ -1,7 +1,18 @@
 <?php
-function getAlias($alias)
-{
-
+function getClassFile($className)
+{   //echobr($className);
+    $configs = \vendor\core\Pii::app()->config;
+    foreach ($configs as $config) {
+        var_dump($config);
+        if(array_key_exists($className,$config)){
+            $fileName = dirname(__DIR__) . $config[$className] . $className .  '.php';
+            echobr($fileName);
+            if (file_exists($fileName)) {
+                return $fileName;
+            }
+        }
+    }
+    return false;
 }
 
 function autoload($className)
@@ -15,10 +26,9 @@ function autoload($className)
         //只要require文件就可以了我擦...
         //return new $className;
     } else {
-        $dirPrefix = getAlias('');
-        if($dirPrefix) {
-
-        } else {
+        $fileName = getClassFile($className);
+        if($fileName){
+            include $fileName;
         }
     }
 }

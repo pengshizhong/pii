@@ -16,6 +16,7 @@ abstract class DbAbstract extends Object
     abstract public function unlock();
 
     //ORM
+    abstract public function getTableInfo();
     abstract public function find();
     abstract public function findByPk();
     abstract public function save();

@@ -7,6 +7,6 @@ class Test extends ActiveRecord
 {
     public function tableName()
     {
-        return "test";
+        return 'test';
     }
 }

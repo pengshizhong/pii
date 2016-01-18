@@ -1,7 +1,6 @@
 <?php
 namespace vendor\db;
 
-use vendor\core\App;
 use vendor\core\Object;
 use vendor\core\Pii;
 
@@ -17,9 +16,9 @@ class ActiveRecord extends Object
 
     public function getProperties()
     {
-
         $tableInfo = Pii::app()->tableInfoPool;
-        var_dump($tableInfo);
+        echobr('tableName : ' . $this->tableName());
+        $tableInfo->getTableInfo($this->tableName());
         //return $tableInfo->getTableInfo($this->tableName);
     }
 

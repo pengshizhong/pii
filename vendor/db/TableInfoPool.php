@@ -1,11 +1,11 @@
 <?php
 namespace vendor\db;
 
-use vendor\core\App;
 use vendor\core\Object;
+use vendor\core\Pii;
 
 class TableInfoPool extends Object{
-    private $_pools;
+    private $_pools=[];
     private static $_tableInfoPool = null;
 
     private function __construct()
@@ -15,7 +15,7 @@ class TableInfoPool extends Object{
 
     public function getTableInfo($tableName)
     {
-        if (array_key_exists('tableName',$this->_pools)) {
+        if (array_key_exists($tableName,$this->_pools)) {
             return $this->_pools[$tableName];
         } else {
             return $this->_pools[$tableName] = $this->_createTableInfo();
@@ -24,7 +24,8 @@ class TableInfoPool extends Object{
 
     private function _createTableInfo()
     {
-        $db = App::getDb();
+        echobr('表的缓冲池没有表信息，开始实例化表信息');
+        Pii::app()->db;
     }
 
     public function getInstance()
