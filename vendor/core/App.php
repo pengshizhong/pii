@@ -1,37 +1,54 @@
 <?php
 namespace vendor\core;
 
+use vendor\db\TableInfoPool;
 use vendor\di\Container;
 use vendor\request\UrlManage;
 
 class App extends Object{
-    private static $_urlManage;
-    private static $_diContainer;
-    private static $_controller;
+    private $_components = [];
 
-    private static function init() {
-        self::$_urlManage = new UrlManage();
-        self::$_diContainer = new Container();
+    private function init() {
+        $this->_components['urlManage'] = new UrlManage();
+        $this->_components['diContainer'] = new Container();
+        $this->_components['appDir'] = dirname(dirname(__DIR__)) . '/';
+        $this->_components['config'] = ConfigManger::load();
     }
 
-    public static function run()
+    public function run()
     {
-        self::init();
-        self::_createController();
-        self::_startAction();
+        try {
+            $this->init();
+            $this->_createController();
+            $this->_startAction();
+        }
+        catch(PiiException $e){
+            echobr($e->getMessage());
+        }
     }
 
-    private static function _createController()
+    private function _createController()
     {
         //echo 'debug<br>';
         //var_dump(self::$_urlManage->_pathInfo['controller']);
-        $className = 'controller\\' . ucfirst(self::$_urlManage->_pathInfo['controller']) . 'Controller';
-        self::$_controller = new $className(self::$_urlManage->_params);
+        $className = 'controller\\' . ucfirst($this->_components['urlManage']->_pathInfo['controller']) . 'Controller';
+//        echobr($className);
+        $this->_components['controller'] = new $className($this->_components['urlManage']->_params);
     }
 
-    private static function _startAction()
+    private function _startAction()
     {
-        $funcName = 'action' . ucfirst(self::$_urlManage->_pathInfo['action']);
-        call_user_func([self::$_controller,$funcName]);
+        $funcName = 'action' . ucfirst($this->_components['urlManage']->_pathInfo['action']);
+        call_user_func([$this->_components['controller'],$funcName]);
     }
+
+    public function __get($property)
+    {
+        if(array_key_exists($property,$this->_components)){
+            return $this->_components[$property];
+        } else {
+            return $this->_components[$property] = call_user_func([ucfirst($property),'getInstance']);
+        }
+    }
+
 }

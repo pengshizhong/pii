@@ -3,4 +3,5 @@ namespace vendor\core;
 
 class SingleFactory
 {
+
 }

@@ -12,13 +12,13 @@ class Object
             if (false) {
                 //行为？
             } else {
-                throw new PiiExcepiton('there is not property in this class',110);
+                throw new PiiException('there is not property in this class',110);
             }
         }
     }
 
     public function __get($property)
-    {
+    {   echobr($property);
         $funcName = 'get' . ucfirst(substr($property,1));
         if (method_exists($this,$funcName)) {
             return call_user_func([$this,$funcName]);

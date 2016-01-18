@@ -8,6 +8,7 @@ function autoload($className)
 {
     $fileName = dirname(__DIR__) . '/' . str_replace('\\','/',$className) . '.php';
     //echo $fileName ."<br>";
+    //echo $fileName;
     if (file_exists($fileName)) {
         include $fileName;
         //echo $className . '<br>';

@@ -1,7 +1,7 @@
 <?php
 namespace vendor\core;
 
-class PiiExcepiton extends \Exception
+class PiiException extends \Exception
 {
         
 }

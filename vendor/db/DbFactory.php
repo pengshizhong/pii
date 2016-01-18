@@ -6,7 +6,6 @@ use vendor\core\SingleFactory;
 class DbFactory extends SingleFactory
 {
     private $_instance = [];
-    private $_activeRecords = [];
 
     public function getInstance($config)
     {
@@ -28,7 +27,7 @@ class DbFactory extends SingleFactory
      */
     public function createInstance($config)
     {
-        $className = '\vendor\db\\' . $config['dbType'] . '\\' . ucfirst($config['dbType']) . '.php';
+        $className = '\vendor\db\\' . ucfirst($config['dbType']) . '\\' . ucfirst($config['dbType']) . '.php';
         return new $className($config);
     }
 
