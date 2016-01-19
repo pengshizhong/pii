@@ -26,10 +26,16 @@ class Mysql {
             PDO::ATTR_PERSISTENT => true,
         ];
         try {
-            $this->_connection = new PDO($dsn, $dbInfo['user'], '123456',$options);
+            $this->_connection = new PDO($dsn, $dbInfo['user'], $dbInfo['dbPassword'],$options);
         }
         catch(\PDOException $e){
             throw new PiiException($e->getMessage(),$e->getCode());
         }
+        echobr('实例化数据库连接完成');
+    }
+
+    public function getTableInfo($tableName)
+    {
+        $sql = 'show table '
     }
 }

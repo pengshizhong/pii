@@ -13,8 +13,8 @@ class DbFactory extends SingleFactory
 
     }
 
-    public static function getInstance(){
-        $dbInfo = self::_getDbInfo();
+    public static function getInstance($key = 'db'){
+        $dbInfo = self::_getDbInfo($key);
         $idKey  = md5($dbInfo['host'] . $dbInfo['dbName']);
         if(array_key_exists($idKey,self::$_instance)){
             return self::$_instance[$idKey];
@@ -25,9 +25,9 @@ class DbFactory extends SingleFactory
         }
     }
 
-    private static function _getDbInfo(){
+    private static function _getDbInfo($key){
         $config = Pii::app()->config;
-        $dbInfo = $config->getValue('db','db');
+        $dbInfo = $config->getValue($key,'db');
         if(!$dbInfo){
             throw new PiiException('there is no db info in config');
         }
