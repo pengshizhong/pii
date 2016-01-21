@@ -22,7 +22,7 @@ class TestController extends Controller
         $model = new Test();
         $model->name='在下的第一条存储记录';
         //var_dump($model);
-        //var_dump($model);
+        var_dump($model);
         $status = $model->save();
         if($status){
             echobr('存储成功');

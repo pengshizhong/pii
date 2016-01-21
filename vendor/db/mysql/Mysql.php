@@ -58,4 +58,9 @@ class Mysql {
         $sql = 'show columns from ' . $tableName;
         return $this->query($sql);
     }
+
+    public function save()
+    {
+
+    }
 }

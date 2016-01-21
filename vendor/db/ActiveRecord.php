@@ -13,15 +13,16 @@ class ActiveRecord extends Object
     public function __construct($isNew=true)
     {
         $this->_isNew = $isNew;
-        $attributions = $this->getProperties();
+        $tableInfo = $this->getTableInfo();
         //var_dump($attributions);
-        foreach ($attributions as $attribution) {
-            $this->_arrtibutions[$attribution['Field']] = null;
+        $attributions = $tableInfo['properties'];
+        foreach ($attributions as $key => $value) {
+            $this->_arrtibutions[$key] = $value;
         }
-        //$this->_pk = $attributions['ex'];
+        $this->_pk = $tableInfo['pk'];
     }
 
-    public function getProperties()
+    public function getTableInfo()
     {
 //        $tableInfo = Pii::app()->tableInfoPool;
         echobr('tableName : ' . $this->tableName());
