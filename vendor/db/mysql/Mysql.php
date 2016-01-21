@@ -13,8 +13,26 @@ class Mysql {
         $this->_connect($dbInfo);
     }
 
-    private function query(){
+    /**
+     * @param $sql
+     * @throws PiiException
+     * @return false or results
+     */
+    private function query($sql)
+    {
+        echobr('start query');
+        echobr('sql:' . $sql );
+        try {
+            $result = $this->_connection->query($sql);
+            $result = $result->fetchAll();
+            echobr('查询完成');
+            return $result;
+        }
+        catch(\PDOException $e){
+            throw new PiiException($e->getMessage());
+        }
 
+        //var_dump($result);
     }
 
     private function _connect($dbInfo)
@@ -24,6 +42,7 @@ class Mysql {
         echobr('dsn:' . $dsn);
         $options = [
             PDO::ATTR_PERSISTENT => true,
+            PDO::FETCH_ASSOC     => 1,
         ];
         try {
             $this->_connection = new PDO($dsn, $dbInfo['user'], $dbInfo['dbPassword'],$options);
@@ -36,6 +55,7 @@ class Mysql {
 
     public function getTableInfo($tableName)
     {
-        $sql = 'show table '
+        $sql = 'show columns from ' . $tableName;
+        return $this->query($sql);
     }
 }

@@ -20,6 +20,13 @@ class TestController extends Controller
             echo "捕获到异常" . get_class($e) . '<br>';
         }
         $model = new Test();
+        $model->name='在下的第一条存储记录';
         //var_dump($model);
+        //var_dump($model);
+        $status = $model->save();
+        if($status){
+            echobr('存储成功');
+        }
+
     }
 }

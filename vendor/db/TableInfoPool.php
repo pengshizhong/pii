@@ -15,17 +15,21 @@ class TableInfoPool extends Object{
 
     public function getTableInfo($tableName)
     {
+//        var_dump($this->_pools);
+//        exit;
         if (array_key_exists($tableName,$this->_pools)) {
             return $this->_pools[$tableName];
         } else {
-            return $this->_pools[$tableName] = $this->_createTableInfo();
+            return $this->_pools[$tableName] = $this->_createTableInfo($tableName);
         }
     }
 
-    private function _createTableInfo()
+    private function _createTableInfo($tableName)
     {
         echobr('表的缓冲池没有表信息，开始实例化表信息');
-        Pii::app()->db;
+        //var_dump(Pii::app()->db->getTableInfo($tableName));
+        return Pii::app()->db->getTableInfo($tableName);
+
     }
 
     public function getInstance()
