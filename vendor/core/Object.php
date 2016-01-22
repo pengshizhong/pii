@@ -22,18 +22,8 @@ class Object
         $funcName = 'get' . ucfirst($property);
         //echobr('回调get函数：' . $funcName);
         if (method_exists($this,$funcName)) {
-
-            echobr('attributions?get');
-            vardumpbr(call_user_func([$this,$funcName]));
             return call_user_func([$this,$funcName]);
-        }
-//        if (property_exists(get_class($this),$property)) {
-//            $tmp = $this;
-//            var_dump($tmp);
-//            return $tmp->$property;
-//            小测试
-//        }
-        else {
+        } else {
             if (false) {
                 //行为？
             } else {
