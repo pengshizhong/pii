@@ -42,6 +42,10 @@ class Mysql {
         //var_dump($result);
     }
 
+    private function _setEncoding($encoding){
+        $this->query('SET NAMES ' . $encoding);
+    }
+
     private function _connect($dbInfo)
     {
         echobr('开始建立数据库连接');
@@ -53,6 +57,7 @@ class Mysql {
         ];
         try {
             $this->_connection = new PDO($dsn, $dbInfo['user'], $dbInfo['dbPassword'],$options);
+            $this->_setEncoding($dbInfo['encoding']);
         }
         catch(\PDOException $e){
             throw new PiiException($e->getMessage(),$e->getCode());

@@ -58,7 +58,7 @@ class QueryBuilder
     public function insert(ActiveRecord $ar)
     {
         $dirtyData  = $ar->attributions;
-        vardumpbr($dirtyData);
+        //vardumpbr($dirtyData);
         $tableName = $ar->tableName();
         $this->_sql = "INSERT INTO $tableName SET ";
         $count = count($dirtyData);
@@ -71,7 +71,6 @@ class QueryBuilder
             }
             $i++;
         }
-
         return $this;
         //$this->_sql = "INSERT INTO "
     }
