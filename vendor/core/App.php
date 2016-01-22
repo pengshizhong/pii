@@ -31,14 +31,14 @@ class App extends Object{
     {
         //echo 'debug<br>';
         //var_dump(self::$_urlManage->_pathInfo['controller']);
-        $className = 'controller\\' . ucfirst($this->_components['urlManage']->_pathInfo['controller']) . 'Controller';
+        $className = 'controller\\' . ucfirst($this->_components['urlManage']->pathInfo['controller']) . 'Controller';
 //        echobr($className);
-        $this->_components['controller'] = new $className($this->_components['urlManage']->_params);
+        $this->_components['controller'] = new $className($this->_components['urlManage']->params);
     }
 
     private function _startAction()
     {
-        $funcName = 'action' . ucfirst($this->_components['urlManage']->_pathInfo['action']);
+        $funcName = 'action' . ucfirst($this->_components['urlManage']->pathInfo['action']);
         call_user_func([$this->_components['controller'],$funcName]);
     }
 

@@ -18,9 +18,13 @@ class Object
     }
 
     public function __get($property)
-    {   echobr($property);
-        $funcName = 'get' . ucfirst(substr($property,1));
+    {   //echobr($property);
+        $funcName = 'get' . ucfirst($property);
+        //echobr('回调get函数：' . $funcName);
         if (method_exists($this,$funcName)) {
+
+            echobr('attributions?get');
+            vardumpbr(call_user_func([$this,$funcName]));
             return call_user_func([$this,$funcName]);
         }
 //        if (property_exists(get_class($this),$property)) {

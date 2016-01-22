@@ -1,7 +1,8 @@
 <?php
-namespace vendor\db;
+namespace vendor\db\mysql;
 
-abstract class QueryBuilder
+use \vendor\db\ActiveRecord;
+class QueryBuilder
 {
     private $_sql = '';
 
@@ -49,17 +50,30 @@ abstract class QueryBuilder
 
     public function getSql()
     {
-        return $this->_sql;
+        $tmp = $this->_sql;
+        $this->_sql = '';
+        return $tmp;
     }
 
     public function insert(ActiveRecord $ar)
     {
         $dirtyData  = $ar->attributions;
-        $this->_sql = "INSERT INTO $ar->tableName() SET ";
-        foreach ($dirtyData as $key => $value) {
-            $this->_sql .= "$key=$value ";
+        vardumpbr($dirtyData);
+        $tableName = $ar->tableName();
+        $this->_sql = "INSERT INTO $tableName SET ";
+        $count = count($dirtyData);
+        echobr($count);
+        $i=0;
+        foreach ($dirtyData as $key => $attribute) {
+            $this->_sql .= $attribute['Field'] . '=\'' . $attribute['value'] . '\'';
+            if ($i<$count-1) {
+                $this->_sql .= ',';
+            }
+            $i++;
         }
+
         return $this;
+        //$this->_sql = "INSERT INTO "
     }
 
     public function update(ActiveRecord $ar)
@@ -77,6 +91,12 @@ abstract class QueryBuilder
     {
         $pk = $ar->attributions[$ar->pk];
         $this->_sql = "DELETE FROM $ar->tableName() WHERE $ar->pk=$pk";
+        return $this;
+    }
+
+    public function getColumns($tableName)
+    {
+        $this->_sql = "SHOW COLUMNS FROM $tableName ";
         return $this;
     }
 }

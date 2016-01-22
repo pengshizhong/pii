@@ -2,15 +2,18 @@
 namespace vendor\db\mysql;
 
 use vendor\core\PiiException;
+use vendor\db\ActiveRecord;
 use vendor\db\DbAbstract;
 use \PDO;
 //为调试方便暂时不继承抽象类
 class Mysql {
     private $_connection;
+    private $_queryBuilder;
 
     public function __construct($dbInfo)
     {
         $this->_connect($dbInfo);
+        $this->_queryBuilder = new QueryBuilder();
     }
 
     /**
@@ -24,9 +27,13 @@ class Mysql {
         echobr('sql:' . $sql );
         try {
             $result = $this->_connection->query($sql);
-            $result = $result->fetchAll();
-            echobr('查询完成');
-            return $result;
+            if ($result) {
+                $result = $result->fetchAll();
+                echobr('查询完成');
+                return $result;
+            } else {
+                echobr('查询失败');
+            }
         }
         catch(\PDOException $e){
             throw new PiiException($e->getMessage());
@@ -55,12 +62,16 @@ class Mysql {
 
     public function getTableInfo($tableName)
     {
-        $sql = 'show columns from ' . $tableName;
+//        $sql = 'show columns from ' . $tableName;
+//        return $this->query($sql);
+        $sql = $this->_queryBuilder->getColumns($tableName)->getSql();
         return $this->query($sql);
     }
 
-    public function save()
+    public function save(ActiveRecord $ar)
     {
-
+        $sql = $this->_queryBuilder->insert($ar)->getSql();
+        return $this->query($sql);
     }
+
 }

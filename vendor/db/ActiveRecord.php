@@ -7,7 +7,7 @@ use vendor\core\Pii;
 class ActiveRecord extends Object
 {
     private $_isNew;
-    private $_arrtibutions=[];
+    private $_attributions=[];
     private $_pk;
 
     public function __construct($isNew=true)
@@ -15,11 +15,18 @@ class ActiveRecord extends Object
         $this->_isNew = $isNew;
         $tableInfo = $this->getTableInfo();
         //var_dump($attributions);
-        $attributions = $tableInfo['properties'];
-        foreach ($attributions as $key => $value) {
-            $this->_arrtibutions[$key] = $value;
+        $this->_attributions = $tableInfo;
+        $this->_init();
+    }
+
+    private function _init()
+    {
+        foreach ($this->_attributions as &$attribution) {
+            $attribution['value'] = $attribution['Default'];
+            if ($attribution['Key']=='PRI') {
+                $this->_pk = $attribution['Field'];
+            }
         }
-        $this->_pk = $tableInfo['pk'];
     }
 
     public function getTableInfo()
@@ -34,10 +41,10 @@ class ActiveRecord extends Object
     public function save()
     {
         if($this->_isNew) {
-            Pii::app()->db->save();
+            Pii::app()->db->save($this);
         }
         else{
-            Pii::app()->db->update();
+            Pii::app()->db->update($this);
         }
     }
 
@@ -46,22 +53,34 @@ class ActiveRecord extends Object
 
     }
 
-    public function setAttribution($property,$value)
+    public function getAttributions()
+    {   //vardumpbr($this->_attributions);
+        //echobr('调用成功？');
+        //vardumpbr($this->_attributions);
+        return $this->_attributions;
+    }
+
+    public function setAttributions($property,$value)
     {
 
     }
 
     public function __set($property,$value)
     {
-        if(array_key_exists($property,$this->_arrtibutions)){
-            $this->_arrtibutions[$property] = $value;
+        if(array_key_exists($property,$this->_attributions)){
+            $this->_attributions[$property]['value'] = $value;
         }
     }
 
+    public function getPk()
+    {
+        return $this->_pk;
+    }
     public function __get($property)
     {
-        if(array_key_exists($property,$this->_arrtibutions)){
-            return $this->_arrtibutions[$property];
+        if(array_key_exists($property,$this->_attributions)){
+            return $this->_attributions[$property];
         }
+        return parent::__get($property);
     }
 }

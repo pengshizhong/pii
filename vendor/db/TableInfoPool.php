@@ -27,21 +27,13 @@ class TableInfoPool extends Object{
     private function _createTableInfo($tableName)
     {
         echobr('表的缓冲池没有表信息，开始实例化表信息');
-        $tmpInfo =  Pii::app()->db->getTableInfo($tableName);
-        $properties = [];
-//        var_dump($tmpInfo);
-        foreach ( $tmpInfo as $info) {
-            $properties[$info['Field']] = $info['Default'];
-            if ($info['Key']=='PRI') {
-                $pk = $info['Field'];
-            }
+        $tmp =  Pii::app()->db->getTableInfo($tableName);
+        $tableInfo = [];
+        foreach ($tmp as $info) {
+            $tableInfo[$info['Field']] = $info;
         }
-        $tableInfo['pk'] = $pk;
-        $tableInfo['properties'] = $properties;
         return $tableInfo;
     }
-
-
 
     public function getInstance()
     {
